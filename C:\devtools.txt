@@ -1,0 +1,21 @@
+!! ⚠️ PLEASE REVIEW THIS LOG FOR SENSITIVE INFORMATION BEFORE SHARING ⚠️ !!
+Dart Code extension: 3.96.0
+Flutter extension: 3.96.0 (activated)
+
+App: Visual Studio Code
+App Host: desktop
+Version: mac 1.93.0
+
+
+Logging Categories:
+    DevTools
+
+Tue Sep 10 2024 [10:44:59 GMT+0200 (Central European Summer Time)] Log file started
+[10:44:59] [DevTools] [Info] Spawning /Users/aleksandralisek/fvm/versions/3.19.5/bin/cache/dart-sdk/bin/dart with args ["devtools","--machine","--allow-embedding","--port","9101"]
+[10:44:59] [DevTools] [Info] ..  with {"toolEnv":{"FLUTTER_HOST":"VSCode","PUB_ENVIRONMENT":"vscode.dart-code","FLUTTER_ROOT":"/Users/aleksandralisek/fvm/versions/3.19.5"}}
+[10:44:59] [DevTools] [Info]     PID: 93387
+[10:44:59] [DevTools] [Info] Process /Users/aleksandralisek/Documents/flutter/bin/cache/dart-sdk/bin/dart terminated! null, SIGTERM
+[10:44:59] [DevTools] [Info] <== {"event":"server.started","method":"server.started","params":{"host":"127.0.0.1","port":9101,"pid":93534,"protocolVersion":"1.2.0"}}
+[10:45:06] [General] [Error] Failed to check for extension recommendations: Tried to call "vscode.extensions.discover" but process has already exited with code undefined
+[10:45:19] [DevTools] [Info] ==> {"id":"1","method":"vscode.extensions.discover","params":{"rootPaths":["/Users/aleksandralisek/Documents/market_bloc"]}}
+[10:45:20] [DevTools] [Info] <== {"id":"1","result":{"/Users/aleksandralisek/Documents/market_bloc":{"extensions":[],"parseErrors":[]}}}
