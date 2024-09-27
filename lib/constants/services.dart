@@ -1,2 +1,1 @@
-const String kApiHost = 'api.marketstack.com';
-const String symbols = 'AAPL';
+const String kApiHost = 'api.polygon.io';

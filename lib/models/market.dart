@@ -33,27 +33,27 @@ class Pagination extends Equatable {
 
 class Ticker extends Equatable {
   final String name;
-  final String symbol;
+  final String ticker;
 
   const Ticker({
     required this.name,
-    required this.symbol,
+    required this.ticker,
   });
   factory Ticker.fromJson(Map<String, dynamic> json) {
     final ticker = json["data"];
 
     return Ticker(
       name: ticker['name'],
-      symbol: ticker['symbol'],
+      ticker: ticker['ticker'],
     );
   }
   @override
   String toString() {
-    return 'Ticker(name: $name, symbol: $symbol)';
+    return 'Ticker(name: $name, ticker: $ticker)';
   }
 
   @override
-  List<Object> get props => [name, symbol];
+  List<Object> get props => [name, ticker];
 }
 
 class Tickers extends Equatable {
@@ -63,11 +63,11 @@ class Tickers extends Equatable {
     required this.tickers,
   });
   factory Tickers.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> tickers = json["data"];
+    final List<dynamic> tickers = json["results"];
 
     return Tickers(
       tickers: tickers
-          .map((e) => Ticker(name: e['name'], symbol: e['symbol']))
+          .map((e) => Ticker(name: e['name'], ticker: e['ticker']))
           .toList(),
     );
   }

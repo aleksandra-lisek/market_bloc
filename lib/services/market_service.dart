@@ -16,26 +16,27 @@ class MarketService {
     final Uri uri = Uri(
         scheme: 'https',
         host: kApiHost,
-        path: '/v1/tickers',
+        path: '/v3/reference/tickers/',
         queryParameters: {
-          'access_key': dotenv.env['APPID'],
-          'limit': '20'
-          // 'symbols': symbols,
-          // 'limit': '1'
+          'active': 'true',
+          'limit': '20',
+          'apiKey': dotenv.env['APPID'],
         });
 
     try {
       final http.Response response = await httpClient.get(uri);
 
       if (response.statusCode != 200) {
-        throw Error();
+        // throw Error();
+        final responseBody = json.decode(response.body);
+
+        print(responseBody['error']);
       }
       final responseBody = json.decode(response.body);
       final listOfTickers = Tickers.fromJson(responseBody);
-      print(listOfTickers);
+
       return listOfTickers;
     } catch (e) {
-      print(e);
       rethrow;
     }
   }

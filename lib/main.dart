@@ -5,6 +5,8 @@ import 'package:market_bloc/models/market.dart';
 import 'package:market_bloc/repositories/market_repository.dart';
 import 'package:market_bloc/services/market_service.dart';
 
+import 'package:market_bloc/widgets/ticker_item.dart';
+
 void main() async {
   await dotenv.load(fileName: '.env');
   runApp(const MyApp());
@@ -35,42 +37,47 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+enum ButtonState {
+  enabled,
+  disabled,
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   Tickers tickers = const Tickers(
     tickers: [
-      Ticker(name: 'Microsoft Corporation', symbol: 'MSFT'),
-      Ticker(name: 'Apple Inc', symbol: 'AAPL'),
-      Ticker(name: 'Amazon.com Inc', symbol: 'AMZN'),
-      Ticker(name: 'Alphabet Inc - Class C', symbol: 'GOOG'),
-      Ticker(name: 'Alphabet Inc - Class A', symbol: 'GOOGL'),
-      Ticker(name: 'Alibaba Group Holding Ltd', symbol: 'BABA'),
-      Ticker(name: 'Meta Platforms Inc - Class A', symbol: 'FB'),
-      Ticker(name: 'BERKSHIRE HATHAWAY INC', symbol: 'BRK.B'),
-      Ticker(name: 'BERKSHIRE HATHAWAY INC', symbol: 'BRK.A'),
-      Ticker(name: 'Vodafone Group plc', symbol: 'VOD'),
-      Ticker(name: 'Visa Inc - Class A', symbol: 'V'),
-      Ticker(name: 'JPMorgan Chase & Company', symbol: 'JPM'),
-      Ticker(name: 'Johnson & Johnson', symbol: 'JNJ'),
-      Ticker(name: ' Walmart Inc', symbol: 'WMT'),
-      Ticker(name: 'Mastercard Incorporated - Class A', symbol: 'MA'),
-      Ticker(name: 'Procter & Gamble Company', symbol: 'PG'),
-      Ticker(name: 'Taiwan Semiconductor Manufacturing', symbol: 'TSM'),
-      Ticker(name: 'Chunghwa Telecom', symbol: 'CHT'),
-      Ticker(name: 'Roche Holding AG', symbol: 'RHHBF')
+      Ticker(name: 'Microsoft Corporation', ticker: 'MSFT'),
+      Ticker(name: 'Apple Inc', ticker: 'AAPL'),
+      Ticker(name: 'Amazon.com Inc', ticker: 'AMZN'),
+      Ticker(name: 'Alphabet Inc - Class C', ticker: 'GOOG'),
+      Ticker(name: 'Alphabet Inc - Class A', ticker: 'GOOGL'),
+      Ticker(name: 'Alibaba Group Holding Ltd', ticker: 'BABA'),
+      Ticker(name: 'Meta Platforms Inc - Class A', ticker: 'FB'),
+      Ticker(name: 'BERKSHIRE HATHAWAY INC', ticker: 'BRK.B'),
+      Ticker(name: 'BERKSHIRE HATHAWAY INC', ticker: 'BRK.A'),
+      Ticker(name: 'Vodafone Group plc', ticker: 'VOD'),
+      Ticker(name: 'Visa Inc - Class A', ticker: 'V'),
+      Ticker(name: 'JPMorgan Chase & Company', ticker: 'JPM'),
+      Ticker(name: 'Johnson & Johnson', ticker: 'JNJ'),
+      Ticker(name: ' Walmart Inc', ticker: 'WMT'),
+      Ticker(name: 'Mastercard Incorporated - Class A', ticker: 'MA'),
+      Ticker(name: 'Procter & Gamble Company', ticker: 'PG'),
+      Ticker(name: 'Taiwan Semiconductor Manufacturing', ticker: 'TSM'),
+      Ticker(name: 'Chunghwa Telecom', ticker: 'CHT'),
+      Ticker(name: 'Roche Holding AG', ticker: 'RHHBF')
     ],
   );
 
   @override
   void initState() {
-    // _fetchData();
+    _fetchData();
     super.initState();
   }
 
-  // void _fetchData() {
-  //   MarketRepository(
-  //           marketApiServices: MarketService(httpClient: http.Client()))
-  //       .fetchCurrentData();
-  // }
+  void _fetchData() {
+    MarketRepository(
+            marketApiServices: MarketService(httpClient: http.Client()))
+        .fetchCurrentData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +86,17 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
         ),
-        body: Center(
+        body: Container(
+            padding: const EdgeInsets.all(24),
             child: ListView.builder(
-          itemCount: tickers.tickers.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(tickers.tickers[index].name),
-            );
-          },
-        )));
+              itemCount: tickers.tickers.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: TickerItem(
+                      tickerName: tickers.tickers[index].name,
+                    ));
+              },
+            )));
   }
 }
