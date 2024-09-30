@@ -41,28 +41,30 @@ class MarketService {
     }
   }
 
-//   Future<dynamic> getCurrentData() async {
-//     final Uri uri = Uri(
-//       scheme: 'https',
-//       host: kApiHost,
-//       path: '/v1/eod',
-//       queryParameters: {
-//         'access_key': dotenv.env['APPID'],
-//         'symbols': symbols,
-//         // 'limit': '1'
-//       },
-//     );
+  Future<TickerDetail> getTickerDetailsData(String ticker) async {
+    final Uri uri = Uri(
+        scheme: 'https',
+        host: kApiHost,
+        path: '/v3/reference/tickers/',
+        queryParameters: {
+          'ticker': ticker,
+        });
 
-//     try {
-//       final http.Response response = await httpClient.get(uri);
+    try {
+      final http.Response response = await httpClient.get(uri);
 
-//       if (response.statusCode != 200) {
-//         throw Error();
-//       }
-//       final responseBody = json.decode(response.body);
-//       print(responseBody);
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
+      if (response.statusCode != 200) {
+        // throw Error();
+        final responseBody = json.decode(response.body);
+
+        print(responseBody['error']);
+      }
+      final responseBody = json.decode(response.body);
+      final listOfTickers = TickerDetail.fromJson(responseBody);
+
+      return listOfTickers;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

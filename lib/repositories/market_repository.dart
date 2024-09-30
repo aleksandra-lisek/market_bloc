@@ -1,3 +1,4 @@
+import 'package:market_bloc/models/market.dart';
 import 'package:market_bloc/services/market_service.dart';
 
 class MarketRepository {
@@ -5,16 +6,24 @@ class MarketRepository {
 
   MarketRepository({required this.marketApiServices});
 
-  Future<dynamic> fetchCurrentData() async {
+  Future<Tickers> fetchTickersData() async {
     try {
-      // final dynamic currentData = await marketApiServices.getCurrentData();
-      // print('currentData: $currentData');
+      final Tickers tickersData = await marketApiServices.getTickersData();
 
-      final dynamic tickersData = await marketApiServices.getTickersData();
-      print('tickersData: $tickersData');
       return tickersData;
     } catch (e) {
-      print(e);
+      throw Error();
+    }
+  }
+
+  Future<TickerDetail> fetchTickerDetailsData(String ticker) async {
+    try {
+      final TickerDetail tickersData =
+          await marketApiServices.getTickerDetailsData(ticker);
+
+      return tickersData;
+    } catch (e) {
+      throw Error();
     }
   }
 }

@@ -7,9 +7,12 @@ import 'package:market_bloc/widgets/touch_feedback.dart';
 
 class TickerItem extends StatefulWidget {
   final String tickerName;
+  final void Function()? onTap;
+
   const TickerItem({
     super.key,
     required this.tickerName,
+    required this.onTap,
   });
 
   @override
@@ -56,7 +59,7 @@ class _TickerItemState extends State<TickerItem> {
         child: TouchFeedback(
           backgroundColor: backgroundColor(_states),
           borderRadius: BorderRadius.circular(8.0),
-          onTap: () {},
+          onTap: widget.onTap,
           states: _states,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),

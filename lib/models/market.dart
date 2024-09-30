@@ -56,6 +56,37 @@ class Ticker extends Equatable {
   List<Object> get props => [name, ticker];
 }
 
+class TickerDetail extends Equatable {
+  final String name;
+  final String ticker;
+  final String description;
+  final String logoUrl;
+
+  const TickerDetail({
+    required this.name,
+    required this.ticker,
+    required this.description,
+    required this.logoUrl,
+  });
+  factory TickerDetail.fromJson(Map<String, dynamic> json) {
+    final ticker = json["results"];
+
+    return TickerDetail(
+      name: ticker['name'],
+      ticker: ticker['ticker'],
+      description: ticker['description'],
+      logoUrl: ticker['logoUrl'],
+    );
+  }
+  @override
+  String toString() {
+    return 'TickerDetail(name: $name, ticker: $ticker)';
+  }
+
+  @override
+  List<Object> get props => [name, ticker, description, logoUrl];
+}
+
 class Tickers extends Equatable {
   final List<Ticker> tickers;
 
