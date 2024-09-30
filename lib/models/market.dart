@@ -1,35 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:equatable/equatable.dart';
-
-class Pagination extends Equatable {
-  final int limit;
-  final int offset;
-  final int count;
-  final int total;
-  const Pagination({
-    required this.limit,
-    required this.offset,
-    required this.count,
-    required this.total,
-  });
-  factory Pagination.fromJson(Map<String, dynamic> json) {
-    final pagination = json["pagination"];
-
-    return Pagination(
-        count: pagination['count'],
-        limit: pagination['limit'],
-        offset: pagination['offset'],
-        total: pagination['total']);
-  }
-  @override
-  String toString() {
-    return 'Pagination(limit: $limit, offset: $offset, count: $count, total: $total)';
-  }
-
-  @override
-  List<Object> get props => [limit, offset, count, total];
-}
 
 class Ticker extends Equatable {
   final String name;
@@ -56,37 +25,6 @@ class Ticker extends Equatable {
   List<Object> get props => [name, ticker];
 }
 
-class TickerDetail extends Equatable {
-  final String name;
-  final String ticker;
-  final String description;
-  final String logoUrl;
-
-  const TickerDetail({
-    required this.name,
-    required this.ticker,
-    required this.description,
-    required this.logoUrl,
-  });
-  factory TickerDetail.fromJson(Map<String, dynamic> json) {
-    final ticker = json["results"];
-
-    return TickerDetail(
-      name: ticker['name'],
-      ticker: ticker['ticker'],
-      description: ticker['description'],
-      logoUrl: ticker['logoUrl'],
-    );
-  }
-  @override
-  String toString() {
-    return 'TickerDetail(name: $name, ticker: $ticker)';
-  }
-
-  @override
-  List<Object> get props => [name, ticker, description, logoUrl];
-}
-
 class Tickers extends Equatable {
   final List<Ticker> tickers;
 
@@ -102,70 +40,68 @@ class Tickers extends Equatable {
           .toList(),
     );
   }
-  // @override
-  // String toString() {
-  //   return
-  //   'Ticker(name: $name, symbol: $symbol)';
-  // }
-
   @override
   List<Object> get props => [tickers];
 }
 
-// class MarketElement extends Equatable {
-//   final int open;
-//   final int high;
-//   final int low;
-//   const MarketElement({
-//     required this.open,
-//     required this.high,
-//     required this.low,
-//   });
+class TickerNews extends Equatable {
+  final List<TickerArticle> news;
 
-//   @override
-//   String toString() => 'MarketElement(open: $open, high: $high, low: $low)';
+  const TickerNews({required this.news});
 
-//   @override
-//   List<Object> get props => [open, high, low];
+  @override
+  List<Object> get props => [news];
 
-//   MarketElement copyWith({
-//     int? open,
-//     int? high,
-//     int? low,
-//   }) {
-//     return MarketElement(
-//       open: open ?? this.open,
-//       high: high ?? this.high,
-//       low: low ?? this.low,
-//     );
-//   }
-// }
+  factory TickerNews.fromJson(Map<String, dynamic> json) {
+    final List<dynamic> tickersNews = json["results"];
 
-// class Market extends Equatable {
-//   final List<MarketElement> element;
-//   const Market({
-//     required this.element,
-//   });
-//   factory Market.fromJson(Map<String, dynamic> json) {
-//     final List<Map> data = json["data"];
-//     return Market(
-//         element: data
-//             .map((e) =>
-//                 MarketElement(open: e["open"], high: e["high"], low: e["low"]))
-//             .toList());
-//   }
-//   @override
-//   String toString() =>
-//       element.map((e) => 'Market(MarketElement: $e').toString();
+    return TickerNews(
+      news: tickersNews
+          .map(
+            (e) => TickerArticle(
+              title: e['title'],
+              author: e['author'],
+              description: e['description'],
+              imageUrl: e['image_url'],
+              articleUrl: e['article_url'],
+            ),
+          )
+          .toList(),
+    );
+  }
+}
 
-//   @override
-//   List<Object> get props => [element];
+class TickerArticle extends Equatable {
+  final String title;
+  final String author;
+  final String description;
+  final String imageUrl;
+  final String articleUrl;
 
-//   Market copyWith({
-//     List<MarketElement>? element,
-//   }) {
-//     return Market(
-//       element: element ?? this.element,
-//     );
-//   }
-// }
+  const TickerArticle({
+    required this.title,
+    required this.author,
+    required this.description,
+    required this.imageUrl,
+    required this.articleUrl,
+  });
+
+  @override
+  List<Object> get props => [title, author, description, imageUrl, articleUrl];
+
+  TickerArticle copyWith({
+    String? title,
+    String? author,
+    String? description,
+    String? imageUrl,
+    String? articleUrl,
+  }) {
+    return TickerArticle(
+      title: title ?? this.title,
+      author: author ?? this.author,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      articleUrl: articleUrl ?? this.articleUrl,
+    );
+  }
+}

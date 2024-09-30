@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:market_bloc/cubits/cubit/market_cubit.dart';
+import 'package:market_bloc/cubits/cubit/ticker_details_cubit.dart';
+import 'package:market_bloc/cubits/market/market_cubit.dart';
 import 'package:market_bloc/repositories/market_repository.dart';
 import 'package:market_bloc/screens/ticker_details_screen.dart';
 import 'package:market_bloc/services/market_service.dart';
@@ -25,7 +26,11 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) => MarketCubit(context.read())..fetchData())
+            create: (context) => MarketCubit(context.read())..fetchData(),
+          ),
+          BlocProvider(
+            create: (context) => TickerDetailsCubit(context.read()),
+          ),
         ],
         child: BlocBuilder<MarketCubit, MarketState>(
           builder: (context, state) {
@@ -75,8 +80,9 @@ class MyHomePage extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TickerDEtailsScreen(
-                      ticker: state.tickers.tickers[index].name,
+                    builder: (context) => TickerDetailsScreen(
+                      key: Key(state.tickers.tickers[index].name),
+                      ticker: state.tickers.tickers[index].ticker,
                     ),
                   ),
                 ),

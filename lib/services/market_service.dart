@@ -41,13 +41,14 @@ class MarketService {
     }
   }
 
-  Future<TickerDetail> getTickerDetailsData(String ticker) async {
+  Future<TickerNews> getTickerDetailsData(String ticker) async {
     final Uri uri = Uri(
         scheme: 'https',
         host: kApiHost,
-        path: '/v3/reference/tickers/',
+        path: '/v2/reference/news/',
         queryParameters: {
           'ticker': ticker,
+          'apiKey': dotenv.env['APPID'],
         });
 
     try {
@@ -60,10 +61,11 @@ class MarketService {
         print(responseBody['error']);
       }
       final responseBody = json.decode(response.body);
-      final listOfTickers = TickerDetail.fromJson(responseBody);
+      final listOfTickers = TickerNews.fromJson(responseBody);
 
       return listOfTickers;
     } catch (e) {
+      print(e);
       rethrow;
     }
   }

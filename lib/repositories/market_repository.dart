@@ -16,9 +16,9 @@ class MarketRepository {
     }
   }
 
-  Future<TickerDetail> fetchTickerDetailsData(String ticker) async {
+  Future<TickerNews> fetchTickerDetailsData(String ticker) async {
     try {
-      final TickerDetail tickersData =
+      final TickerNews tickersData =
           await marketApiServices.getTickerDetailsData(ticker);
 
       return tickersData;

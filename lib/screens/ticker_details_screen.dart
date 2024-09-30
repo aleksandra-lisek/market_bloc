@@ -1,39 +1,124 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:market_bloc/repositories/market_repository.dart';
-import 'package:market_bloc/services/market_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TickerDEtailsScreen extends StatefulWidget {
+import 'package:market_bloc/cubits/cubit/ticker_details_cubit.dart';
+import 'package:market_bloc/utils/hex_color.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class TickerDetailsScreen extends StatefulWidget {
   final String ticker;
-  const TickerDEtailsScreen({super.key, required this.ticker});
+  const TickerDetailsScreen({super.key, required this.ticker});
 
   @override
-  State<TickerDEtailsScreen> createState() => _TickerDEtailsScreenState();
+  State<TickerDetailsScreen> createState() => _TickerDetailsScreenState();
 }
 
-class _TickerDEtailsScreenState extends State<TickerDEtailsScreen> {
+class _TickerDetailsScreenState extends State<TickerDetailsScreen> {
   @override
-  void initState() {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _fetchData();
-    super.initState();
   }
 
   void _fetchData() {
-    MarketRepository(
-            marketApiServices: MarketService(httpClient: http.Client()))
-        .fetchTickersData();
+    context.read<TickerDetailsCubit>().fetchData(widget.ticker);
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<TickerDetailsCubit, TickerDetailsState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return switch (state) {
+          LoadedTickerDetailsState() => _Details(state: state),
+          LoadingTickerDetailsState() =>
+            const Center(child: CircularProgressIndicator()),
+          ErrorTickerDetailsState() => Text('Error: ${state.error}'),
+        };
+      },
+    );
+  }
+}
+
+class _Details extends StatelessWidget {
+  final LoadedTickerDetailsState state;
+
+  const _Details({
+    required this.state,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.ticker),
+        title: const Text('news'),
+        leading: const CloseButton(),
       ),
       body: Container(
         padding: const EdgeInsets.all(24),
-        child: Text(widget.ticker),
+        child: ListView.builder(
+          itemCount: state.news.length,
+          itemBuilder: (BuildContext context, int index) {
+            final item = state.news[index];
+
+            return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Image.network(item.imageUrl),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: HexColor('1E1E1E'),
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: HexColor('575151'),
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.author,
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: HexColor('575151'),
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ))),
+                              onPressed: () {
+                                launchUrl(Uri.parse(item.articleUrl));
+                              },
+                              child: const Text('Go to an article')),
+                        ])));
+          },
+        ),
       ),
     );
   }
