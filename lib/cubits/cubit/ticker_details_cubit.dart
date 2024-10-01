@@ -12,6 +12,9 @@ class TickerDetailsCubit extends Cubit<TickerDetailsState> {
       : super(const LoadingTickerDetailsState());
 
   Future<void> fetchData(String ticker) async {
+    emit(
+      const LoadingTickerDetailsState(),
+    );
     try {
       final TickerNews details =
           await marketRepository.fetchTickerDetailsData(ticker);

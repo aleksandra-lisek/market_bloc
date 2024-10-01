@@ -16,21 +16,18 @@ class TickerDetailsScreen extends StatefulWidget {
 
 class _TickerDetailsScreenState extends State<TickerDetailsScreen> {
   @override
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    _fetchData();
+    _fetchData(widget.ticker);
   }
 
-  void _fetchData() {
-    context.read<TickerDetailsCubit>().fetchData(widget.ticker);
+  void _fetchData(String ticker) {
+    context.read<TickerDetailsCubit>().fetchData(ticker);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TickerDetailsCubit, TickerDetailsState>(
-      listener: (context, state) {},
+    return BlocBuilder<TickerDetailsCubit, TickerDetailsState>(
       builder: (context, state) {
         return switch (state) {
           LoadedTickerDetailsState() => _Details(state: state),

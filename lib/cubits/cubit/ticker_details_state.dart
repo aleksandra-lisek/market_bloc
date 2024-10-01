@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'ticker_details_cubit.dart';
 
 sealed class TickerDetailsState extends Equatable {
@@ -18,6 +17,8 @@ class LoadedTickerDetailsState extends TickerDetailsState {
   const LoadedTickerDetailsState({
     required this.news,
   });
+  @override
+  List<Object> get props => [news];
 }
 
 class ErrorTickerDetailsState extends TickerDetailsState {
