@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:market_bloc/cubits/cubit/ticker_details_cubit.dart';
 import 'package:market_bloc/utils/hex_color.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class TickerDetailsScreen extends StatefulWidget {
   final String ticker;
@@ -69,9 +70,16 @@ class _Details extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
-                            child: Image.network(item.imageUrl),
+                            child: CachedNetworkImage(
+                              imageUrl: item.imageUrl,
+                              progressIndicatorBuilder:
+                                  (context, url, progress) =>
+                                      const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const SizedBox.shrink(),
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 24),
                           Text(
                             item.title,
                             style: TextStyle(
